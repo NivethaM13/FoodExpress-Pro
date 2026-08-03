@@ -5,7 +5,7 @@ function Sidebar() {
   const role = getRole();
 
   return (
-    <div className="w-64 h-screen bg-gray-900 text-white p-6">
+    <div className="w-64 h-screen overflow-y-auto bg-gray-900 text-white p-6">
 
       <h2 className="text-2xl font-bold mb-8">
         🍔 FoodExpress
@@ -153,7 +153,136 @@ function Sidebar() {
             </li>
 
 
+<li>
+  <Link
+    to="/customer/payment"
+    className="block hover:text-orange-400"
+  >
+    Payment 💳
+  </Link>
+</li>
 
+
+
+<li>
+  <Link
+    to="/customer/payment-history"
+    className="block hover:text-orange-400"
+  >
+    Payment History 📜
+  </Link>
+</li>
+
+<li>
+  <Link
+    to="/customer/reviews"
+    className="block hover:text-orange-400"
+  >
+    Restaurant Reviews ⭐
+  </Link>
+</li>
+
+
+<li>
+  <Link
+    to="/customer/wallet"
+    className="block hover:text-orange-400"
+  >
+    Wallet 💰
+  </Link>
+</li>
+
+<li>
+
+<Link
+
+to="/customer/chat"
+
+className="block hover:text-orange-400"
+
+>
+
+Chat 💬
+
+</Link>
+
+</li>
+
+
+<li>
+
+<Link
+
+to="/customer/support-chat"
+
+className="block hover:text-orange-400"
+
+>
+
+Support Chat 🧑‍💻
+
+</Link>
+
+</li>
+
+
+<li>
+
+<Link
+
+to="/customer/ai-recommendations"
+
+className="block hover:text-orange-400"
+
+>
+
+AI Recommendations 🤖
+
+</Link>
+
+</li>
+
+
+
+
+
+<li>
+  <Link
+    to="/customer/wallet-transactions"
+    className="block hover:text-orange-400"
+  >
+    Wallet Transactions 📜
+  </Link>
+</li>
+
+<li>
+  <Link
+    to="/customer/notifications"
+    className="block hover:text-orange-400"
+  >
+    Notifications 🔔
+  </Link>
+</li>
+
+
+<li>
+  <Link
+    to="/customer/coupons"
+    className="block hover:text-orange-400"
+  >
+    Offers & Coupons 🎟️
+  </Link>
+</li>
+
+
+<li>
+  <Link
+    to="/customer/review"
+    className="block hover:text-orange-400"
+  >
+    Reviews ⭐
+  </Link>
+</li>
 
             <li>
               <Link
@@ -192,6 +321,17 @@ function Sidebar() {
                 Delivery Addresses
               </Link>
             </li>
+
+
+
+<li>
+  <Link
+    to="/customer/track-order/1"
+    className="block hover:text-orange-400"
+  >
+    Track Order 📍
+  </Link>
+</li>
 
 
             <li>

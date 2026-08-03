@@ -1,8 +1,17 @@
 import { Routes, Route } from "react-router-dom";
+import Payment from "../pages/customer/Payment";
+import WalletTransactions from "../pages/customer/WalletTransactions";
+import Chat from "../pages/customer/Chat";
+import AIRecommendations from "../pages/customer/AIRecommendations";
+import SupportChat from "../pages/customer/SupportChat";
+import Coupons from "../pages/customer/Coupons";
+import Review from "../pages/customer/Review";
 
+import Wallet from "../pages/customer/Wallet";
+import PaymentHistory from "../pages/customer/PaymentHistory";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-
+import TrackOrder from "../pages/customer/TrackOrder";
 import Dashboard from "../pages/admin/Dashboard";
 import VerificationManagement from "../pages/admin/VerificationManagement";
 import DeliveryDashboard from "../pages/delivery/DeliveryDashboard";
@@ -12,7 +21,8 @@ import RestaurantSettings from "../pages/restaurant/RestaurantSettings";
 import Verification from "../pages/restaurant/Verification";
 import VerificationStatus from "../pages/restaurant/VerificationStatus";
 import Menu from "../pages/restaurant/Menu";
-
+import Notifications from "../pages/customer/Notifications";
+import RestaurantReviews from "../pages/customer/RestaurantReviews";
 import Home from "../pages/customer/Home";
 import CustomerDashboard from "../pages/customer/CustomerDashboard";
 import Profile from "../pages/customer/Profile";
@@ -45,7 +55,59 @@ function AppRoutes() {
         element={<Register />}
       />
 
+<Route
+ path="/customer/notifications"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <Notifications />
+   </ProtectedRoute>
+ }
+/>
 
+
+<Route
+
+path="/customer/support-chat"
+
+element={
+
+<ProtectedRoute allowedRoles={["CUSTOMER"]}>
+
+<SupportChat />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+<Route
+
+path="/customer/ai-recommendations"
+
+element={
+
+<ProtectedRoute allowedRoles={["CUSTOMER"]}>
+
+<AIRecommendations />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+
+<Route
+ path="/customer/chat"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+      <Chat />
+   </ProtectedRoute>
+ }
+/>
 
       {/* ADMIN */}
 
@@ -58,6 +120,24 @@ function AppRoutes() {
         }
       />
 
+      <Route
+ path="/customer/coupons"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <Coupons />
+   </ProtectedRoute>
+ }
+/>
+
+
+<Route
+ path="/customer/wallet-transactions"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <WalletTransactions />
+   </ProtectedRoute>
+ }
+/>
 
       <Route
         path="/admin/verification"
@@ -87,7 +167,23 @@ function AppRoutes() {
    </ProtectedRoute>
  }
 />
+<Route
+ path="/customer/track-order/:id"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <TrackOrder />
+   </ProtectedRoute>
+ }
+/>
 
+<Route
+ path="/customer/payment"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <Payment />
+   </ProtectedRoute>
+ }
+/>
       {/* RESTAURANT OWNER */}
 
       <Route
@@ -99,7 +195,14 @@ function AppRoutes() {
         }
       />
 
-
+<Route
+ path="/customer/wallet"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <Wallet />
+   </ProtectedRoute>
+ }
+/>
       <Route
         path="/restaurant/my-restaurant"
         element={
@@ -109,6 +212,26 @@ function AppRoutes() {
         }
       />
 
+
+
+<Route
+ path="/customer/review"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <Review />
+   </ProtectedRoute>
+ }
+/>
+
+
+<Route
+ path="/customer/reviews"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <RestaurantReviews />
+   </ProtectedRoute>
+ }
+/>
 
       <Route
         path="/restaurant/settings"
@@ -132,6 +255,17 @@ function AppRoutes() {
         path="/restaurant/verification-status"
         element={<VerificationStatus />}
       />
+
+
+<Route
+ path="/customer/payment-history"
+ element={
+   <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+     <PaymentHistory />
+   </ProtectedRoute>
+ }
+/>
+
 
 
 

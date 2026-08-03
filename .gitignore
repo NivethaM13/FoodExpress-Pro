@@ -13,5 +13,9 @@ dist/
 # Database
 *.db
 
-# VS Code
+# Upload files
+uploads/
+
+# IDE
 .vscode/
+.idea/

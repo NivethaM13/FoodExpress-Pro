@@ -4,7 +4,26 @@ from app.models.address import Address
 from app.models.favorite import FavoriteRestaurant
 from app.models.order_preference import OrderPreference
 from app.config.database import Base, engine
+from app.models.order_tracking import OrderTracking
+from app.routes.payment_route import router as payment_router
+from app.models.coupon import Coupon
+from app.models.chat import Chat
+from app.routes.upload_route import router as upload_router
+from app.routes.recommendation_route import router as recommendation_router
+from fastapi.staticfiles import StaticFiles
+from app.routes.chat_route import router as chat_router
+from app.routes.review_route import router as review_router
 
+from app.models.review import Review
+from app.routes.coupon_route import router as coupon_router
+from app.models.wallet import Wallet
+from app.models.wallet_transaction import WalletTransaction
+from app.models.notification import Notification
+
+from app.routes.notification_route import router as notification_router
+from app.routes.wallet_route import router as wallet_router
+from app.models.payment import Payment
+from app.routes.tracking_route import router as tracking_router
 from app.routes.delivery_route import router as delivery_router
 from app.routes.customer_route import router as customer_router
 # Import Models (Required for table creation)
@@ -55,6 +74,24 @@ app.include_router(addon_router)
 app.include_router(verification_router)
 app.include_router(customer_router)
 app.include_router(admin_router)
+app.include_router(payment_router)
+app.include_router(coupon_router)
+
+
+app.include_router(
+    recommendation_router
+)
+app.include_router(review_router)
+app.include_router(chat_router)
+app.mount(
+    "/uploads",
+    StaticFiles(directory="uploads"),
+    name="uploads"
+)
+app.include_router(upload_router)
+app.include_router(notification_router)
+app.include_router(wallet_router)
+app.include_router(tracking_router)
 app.include_router(kitchen_router)
 app.include_router(delivery_router)
 app.include_router(delivery_partner_router)
