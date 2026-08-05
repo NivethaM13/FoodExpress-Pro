@@ -13,6 +13,7 @@ from sqlalchemy.sql import func
 from app.config.database import Base
 
 
+
 class Order(Base):
 
     __tablename__ = "orders"
@@ -39,7 +40,6 @@ class Order(Base):
     )
 
 
-    # Delivery Partner Assignment
     delivery_partner_id = Column(
         Integer,
         ForeignKey("delivery_partners.id"),
@@ -84,6 +84,9 @@ class Order(Base):
     )
 
 
+
+    # Relationships
+
     items = relationship(
         "OrderItem",
         cascade="all, delete"
@@ -92,4 +95,14 @@ class Order(Base):
 
     delivery_partner = relationship(
         "DeliveryPartner"
+    )
+
+
+    user = relationship(
+        "User"
+    )
+
+
+    restaurant = relationship(
+        "Restaurant"
     )

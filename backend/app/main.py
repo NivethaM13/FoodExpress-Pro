@@ -13,13 +13,13 @@ from app.routes.recommendation_route import router as recommendation_router
 from fastapi.staticfiles import StaticFiles
 from app.routes.chat_route import router as chat_router
 from app.routes.review_route import router as review_router
-
+from app.routes.chatbot_route import router as chatbot_router
 from app.models.review import Review
 from app.routes.coupon_route import router as coupon_router
 from app.models.wallet import Wallet
 from app.models.wallet_transaction import WalletTransaction
 from app.models.notification import Notification
-
+from app.routes.restaurant_dashboard_route import router as restaurant_dashboard_router
 from app.routes.notification_route import router as notification_router
 from app.routes.wallet_route import router as wallet_router
 from app.models.payment import Payment
@@ -28,6 +28,15 @@ from app.routes.delivery_route import router as delivery_router
 from app.routes.customer_route import router as customer_router
 # Import Models (Required for table creation)
 from app.models.user import User
+from app.routes.report_route import router as report_router
+
+
+
+from app.routes.branch_route import router as branch_router
+from app.routes.refund_route import router as refund_router
+from app.routes.inventory_route import router as inventory_router
+from app.routes.admin_dashboard_route import router as admin_dashboard_router
+from app.routes.delivery_dashboard_route import router as delivery_dashboard_router
 from app.routes.cart_route import router as cart_router
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
@@ -43,7 +52,7 @@ from app.routes.restaurant_verification_route import router as verification_rout
 from app.models.restaurant import Restaurant
 from app.models.menu import Menu
 from app.models.menu_addon import MenuAddon
-
+from app.routes.customer_dashboard_route import router as customer_dashboard_router
 from app.routes.menu_addon_route import router as addon_router
 # Import Routes
 from app.routes.auth_route import router as auth_router
@@ -76,7 +85,27 @@ app.include_router(customer_router)
 app.include_router(admin_router)
 app.include_router(payment_router)
 app.include_router(coupon_router)
+app.include_router(
+    delivery_dashboard_router
+)
+app.include_router(refund_router)
 
+app.include_router(branch_router)
+app.include_router(
+    customer_dashboard_router
+)
+
+app.include_router(
+    admin_dashboard_router
+)
+
+app.include_router(
+    chatbot_router
+)
+
+app.include_router(
+    restaurant_dashboard_router
+)
 
 app.include_router(
     recommendation_router
@@ -88,6 +117,13 @@ app.mount(
     StaticFiles(directory="uploads"),
     name="uploads"
 )
+
+app.include_router(
+    inventory_router
+)
+
+
+app.include_router(report_router)
 app.include_router(upload_router)
 app.include_router(notification_router)
 app.include_router(wallet_router)

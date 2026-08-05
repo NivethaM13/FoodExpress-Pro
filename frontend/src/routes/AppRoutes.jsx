@@ -1,12 +1,21 @@
+
 import { Routes, Route } from "react-router-dom";
+import AdminUsers from "../pages/admin/AdminUsers";
 import Payment from "../pages/customer/Payment";
+import AdminRestaurants from "../pages/admin/AdminRestaurants";
 import WalletTransactions from "../pages/customer/WalletTransactions";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 import Chat from "../pages/customer/Chat";
+import ReportsAnalytics from "../pages/admin/ReportsAnalytics";
+import RefundManagement from "../pages/admin/RefundManagement";
+import InventoryManagement from "../pages/restaurant/InventoryManagement";
 import AIRecommendations from "../pages/customer/AIRecommendations";
 import SupportChat from "../pages/customer/SupportChat";
 import Coupons from "../pages/customer/Coupons";
-import Review from "../pages/customer/Review";
 
+import RestaurantDashboard from "../pages/restaurant/RestaurantDashboard";
+import Review from "../pages/customer/Review";
+import AIChatbot from "../pages/customer/AIChatbot";
 import Wallet from "../pages/customer/Wallet";
 import PaymentHistory from "../pages/customer/PaymentHistory";
 import Login from "../pages/auth/Login";
@@ -15,16 +24,18 @@ import TrackOrder from "../pages/customer/TrackOrder";
 import Dashboard from "../pages/admin/Dashboard";
 import VerificationManagement from "../pages/admin/VerificationManagement";
 import DeliveryDashboard from "../pages/delivery/DeliveryDashboard";
-import RestaurantDashboard from "../pages/restaurant/Dashboard";
+import CustomerDashboard from "../pages/customer/CustomerDashboard";
 import MyRestaurant from "../pages/restaurant/MyRestaurant";
 import RestaurantSettings from "../pages/restaurant/RestaurantSettings";
 import Verification from "../pages/restaurant/Verification";
 import VerificationStatus from "../pages/restaurant/VerificationStatus";
 import Menu from "../pages/restaurant/Menu";
+
+import AdminBranches from "../pages/admin/AdminBranches";
 import Notifications from "../pages/customer/Notifications";
 import RestaurantReviews from "../pages/customer/RestaurantReviews";
 import Home from "../pages/customer/Home";
-import CustomerDashboard from "../pages/customer/CustomerDashboard";
+
 import Profile from "../pages/customer/Profile";
 import CustomerMenu from "../pages/customer/Menu";
 import Cart from "../pages/customer/Cart";
@@ -64,6 +75,41 @@ function AppRoutes() {
  }
 />
 
+<Route
+
+path="/customer/dashboard"
+
+element={
+
+<ProtectedRoute allowedRoles={["CUSTOMER"]}>
+
+<CustomerDashboard />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+<Route
+
+path="/admin/refunds"
+
+element={
+
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<RefundManagement />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+
 
 <Route
 
@@ -100,6 +146,110 @@ element={
 
 
 
+
+<Route
+
+path="/restaurant/inventory"
+
+element={
+
+<ProtectedRoute allowedRoles={["RESTAURANT_OWNER"]}>
+
+<InventoryManagement />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+<Route
+
+path="/admin/reports"
+
+element={
+
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<ReportsAnalytics />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+<Route
+
+path="/customer/ai-chatbot"
+
+element={
+
+<ProtectedRoute allowedRoles={["CUSTOMER"]}>
+
+<AIChatbot />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+
+<Route
+
+path="/admin/restaurants"
+
+element={
+
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<AdminRestaurants />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+<Route
+
+path="/admin/users"
+
+element={
+
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<AdminUsers />
+
+</ProtectedRoute>
+
+}
+
+/>
+
+
+
+<Route
+
+path="/restaurant/dashboard"
+
+element={
+
+<ProtectedRoute allowedRoles={["RESTAURANT_OWNER"]}>
+
+<RestaurantDashboard />
+
+</ProtectedRoute>
+
+}
+
+/>
+
 <Route
  path="/customer/chat"
  element={
@@ -109,6 +259,23 @@ element={
  }
 />
 
+
+
+<Route
+
+path="/admin/dashboard"
+
+element={
+
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<AdminDashboard />
+
+</ProtectedRoute>
+
+}
+
+/>
       {/* ADMIN */}
 
       <Route
@@ -119,6 +286,12 @@ element={
           </ProtectedRoute>
         }
       />
+
+
+      <Route
+  path="/admin/branches"
+  element={<AdminBranches />}
+/>
 
       <Route
  path="/customer/coupons"

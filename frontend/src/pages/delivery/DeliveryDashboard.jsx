@@ -2,17 +2,24 @@ import { useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
+
 import api from "../../services/api";
 
 
-function DeliveryDashboard() {
+
+function DeliveryDashboard(){
 
 
-  const [orders, setOrders] = useState([]);
+  const [dashboard,setDashboard] = useState(null);
+
+  const [orders,setOrders] = useState([]);
+
 
 
 
   useEffect(()=>{
+
+    fetchDashboard();
 
     fetchOrders();
 
@@ -20,19 +27,22 @@ function DeliveryDashboard() {
 
 
 
-  const fetchOrders = async()=>{
+
+
+  const fetchDashboard = async()=>{
 
     try{
 
       const response = await api.get(
-        "/delivery/orders"
+        "/delivery/dashboard/"
       );
 
 
-      setOrders(response.data);
+      setDashboard(response.data);
 
 
-    }catch(error){
+    }
+    catch(error){
 
       console.log(error);
 
@@ -43,12 +53,44 @@ function DeliveryDashboard() {
 
 
 
-  const markDelivered = async(id)=>{
+
+  const fetchOrders = async()=>{
 
     try{
 
+
+      const response = await api.get(
+        "/delivery/orders"
+      );
+
+
+      setOrders(response.data);
+
+
+    }
+    catch(error){
+
+      console.log(error);
+
+    }
+
+  };
+
+
+
+
+
+
+  const markDelivered = async(id)=>{
+
+
+    try{
+
+
       await api.put(
+
         `/delivery/orders/${id}/delivered`
+
       );
 
 
@@ -59,112 +101,420 @@ function DeliveryDashboard() {
 
       fetchOrders();
 
+      fetchDashboard();
 
-    }catch(error){
+
+    }
+    catch(error){
 
       console.log(error);
 
     }
+
 
   };
 
 
 
 
-  return (
-
-    <>
-
-    <Navbar />
 
 
-    <div className="flex">
+  if(!dashboard){
 
+    return(
 
-      <Sidebar />
+      <>
 
+      <Navbar />
 
-      <div className="flex-1 p-8">
+      <div className="p-10">
 
-
-        <h1 className="text-4xl font-bold mb-8">
-          Delivery Dashboard 🚴
-        </h1>
-
-
-
-        <div className="grid grid-cols-3 gap-6">
-
-
-        {orders.map((order)=>(
-
-
-          <div
-            key={order.id}
-            className="bg-white shadow rounded-xl p-6"
-          >
-
-
-            <h2 className="text-xl font-bold">
-              Order #{order.id}
-            </h2>
-
-
-            <p>
-              Amount:
-              ₹{order.total_amount}
-            </p>
-
-
-            <p>
-              Address:
-              {order.delivery_address}
-            </p>
-
-
-            <p>
-              Status:
-              <b>
-                {" "}
-                {order.order_status}
-              </b>
-            </p>
-
-
-
-            <button
-
-              onClick={()=>markDelivered(order.id)}
-
-              className="bg-green-600 text-white px-4 py-2 rounded mt-5 w-full"
-
-            >
-
-              Mark Delivered ✅
-
-            </button>
-
-
-
-          </div>
-
-
-        ))}
-
-
-
-        </div>
-
+      Loading Dashboard...
 
       </div>
 
+      </>
 
-    </div>
+    );
+
+  }
 
 
-    </>
 
-  );
+
+
+return(
+
+<>
+
+
+<Navbar />
+
+
+<div className="flex min-h-screen bg-gray-100">
+
+
+<Sidebar />
+
+
+
+<div className="flex-1 p-8">
+
+
+
+<h1 className="
+text-4xl
+font-bold
+mb-8
+">
+
+🚴 Delivery Dashboard
+
+</h1>
+
+
+
+
+
+{/* Dashboard Cards */}
+
+
+<div className="
+grid
+grid-cols-4
+gap-6
+mb-10
+">
+
+
+
+<div className="
+bg-white
+rounded-2xl
+shadow
+p-6
+">
+
+<h2 className="text-gray-500">
+
+Assigned
+
+</h2>
+
+<p className="
+text-4xl
+font-bold
+text-orange-600
+">
+
+{dashboard.assigned_deliveries}
+
+</p>
+
+</div>
+
+
+
+
+
+
+<div className="
+bg-white
+rounded-2xl
+shadow
+p-6
+">
+
+<h2 className="text-gray-500">
+
+Completed
+
+</h2>
+
+<p className="
+text-4xl
+font-bold
+text-green-600
+">
+
+{dashboard.completed_deliveries}
+
+</p>
+
+</div>
+
+
+
+
+
+
+<div className="
+bg-white
+rounded-2xl
+shadow
+p-6
+">
+
+<h2 className="text-gray-500">
+
+Earnings
+
+</h2>
+
+<p className="
+text-4xl
+font-bold
+text-blue-600
+">
+
+₹ {dashboard.total_earnings}
+
+</p>
+
+</div>
+
+
+
+
+
+
+
+<div className="
+bg-white
+rounded-2xl
+shadow
+p-6
+">
+
+<h2 className="text-gray-500">
+
+Rating ⭐
+
+</h2>
+
+<p className="
+text-4xl
+font-bold
+text-yellow-500
+">
+
+{dashboard.delivery_rating}
+
+</p>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+{/* Assigned Orders */}
+
+
+<h2 className="
+text-3xl
+font-bold
+mb-5
+">
+
+📦 Assigned Deliveries
+
+</h2>
+
+
+
+
+<div className="
+grid
+grid-cols-3
+gap-6
+">
+
+
+{
+
+orders.map((order)=>(
+
+
+<div
+
+key={order.id}
+
+className="
+bg-white
+rounded-2xl
+shadow
+p-6
+"
+
+>
+
+
+<h3 className="
+text-xl
+font-bold
+">
+
+Order #{order.id}
+
+</h3>
+
+
+
+<p className="mt-2">
+
+Amount:
+₹{order.total_amount}
+
+</p>
+
+
+
+<p>
+
+Address:
+
+{order.delivery_address}
+
+</p>
+
+
+
+<p>
+
+Status:
+
+<b>
+
+{" "}
+
+{order.order_status}
+
+</b>
+
+</p>
+
+
+
+<button
+
+onClick={()=>markDelivered(order.id)}
+
+className="
+bg-green-600
+text-white
+px-4
+py-2
+rounded-xl
+mt-5
+w-full
+"
+
+>
+
+Mark Delivered ✅
+
+</button>
+
+
+
+</div>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{/* Route Optimization */}
+
+
+<div className="
+bg-white
+rounded-2xl
+shadow
+p-6
+mt-10
+">
+
+
+<h2 className="
+text-3xl
+font-bold
+mb-5
+">
+
+🗺️ Route Optimization
+
+</h2>
+
+
+{
+
+dashboard.route_suggestions.map(
+
+(route,index)=>(
+
+
+<p
+
+key={index}
+
+className="
+bg-gray-100
+p-3
+rounded-xl
+mb-3
+"
+
+>
+
+🚴 {route}
+
+</p>
+
+
+)
+
+)
+
+}
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</>
+
+
+);
+
 
 }
 

@@ -10,23 +10,25 @@ function Navbar() {
 
   const role = getRole();
 
-
-  const [count,setCount] = useState(0);
-
-
-
-  useEffect(()=>{
-
-    fetchUnreadCount();
-
-  },[]);
+  const [count, setCount] = useState(0);
 
 
 
+  useEffect(() => {
 
-  const fetchUnreadCount = async()=>{
+    // Only CUSTOMER can access notifications API
+    if (role === "CUSTOMER") {
+      fetchUnreadCount();
+    }
 
-    try{
+  }, [role]);
+
+
+
+
+  const fetchUnreadCount = async () => {
+
+    try {
 
       const response = await api.get(
         "/notifications/"
@@ -43,8 +45,7 @@ function Navbar() {
       );
 
 
-    }
-    catch(error){
+    } catch (error) {
 
       console.log(error);
 
@@ -66,20 +67,22 @@ function Navbar() {
 
 
 
+
   return (
 
     <nav className="bg-orange-600 text-white shadow-lg">
 
-
-      <div className="
-      max-w-7xl
-      mx-auto
-      px-6
-      py-4
-      flex
-      justify-between
-      items-center
-      ">
+      <div
+        className="
+        max-w-7xl
+        mx-auto
+        px-6
+        py-4
+        flex
+        justify-between
+        items-center
+        "
+      >
 
 
         <Link
@@ -92,12 +95,13 @@ function Navbar() {
 
 
 
-
-        <div className="
-        flex
-        items-center
-        gap-6
-        ">
+        <div
+          className="
+          flex
+          items-center
+          gap-6
+          "
+        >
 
 
           <span className="font-medium">
@@ -107,52 +111,53 @@ function Navbar() {
 
 
 
+          {/* CUSTOMER NOTIFICATION ONLY */}
 
-          {/* Notification Bell */}
+          {role === "CUSTOMER" && (
 
-          <Link
+            <Link
 
-          to="/customer/notifications"
-
-          className="
-          relative
-          text-2xl
-          "
-
-          >
-
-          🔔
-
-
-          {
-            count > 0 && (
-
-              <span
+              to="/customer/notifications"
 
               className="
-              absolute
-              -top-3
-              -right-3
-              bg-red-500
-              text-white
-              text-xs
-              rounded-full
-              px-2
+              relative
+              text-2xl
               "
 
-              >
+            >
 
-              {count}
-
-              </span>
-
-            )
-          }
+              🔔
 
 
-          </Link>
+              {
+                count > 0 && (
+
+                  <span
+
+                    className="
+                    absolute
+                    -top-3
+                    -right-3
+                    bg-red-500
+                    text-white
+                    text-xs
+                    rounded-full
+                    px-2
+                    "
+
+                  >
+
+                    {count}
+
+                  </span>
+
+                )
+              }
 
 
+            </Link>
+
+          )}
 
 
 
@@ -160,21 +165,21 @@ function Navbar() {
 
           <button
 
-          onClick={handleLogout}
+            onClick={handleLogout}
 
-          className="
-          bg-white
-          text-orange-600
-          px-4
-          py-2
-          rounded-lg
-          hover:bg-gray-100
-          transition
-          "
+            className="
+            bg-white
+            text-orange-600
+            px-4
+            py-2
+            rounded-lg
+            hover:bg-gray-100
+            transition
+            "
 
           >
 
-          Logout
+            Logout
 
           </button>
 
