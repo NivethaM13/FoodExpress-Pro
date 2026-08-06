@@ -70,6 +70,39 @@ Restaurants 🍽️
 </li>
 
 
+<Link
+ to="/admin/business-dashboard"
+ className="flex items-center gap-3"
+>
+  Business Intelligence 📊
+</Link>
+
+
+<Link
+ to="/admin/audit-logs"
+ className="flex items-center gap-3"
+>
+  Audit Logs 🔐
+</Link>
+
+
+<Link
+ to="/admin/security-monitor"
+ className="flex items-center gap-3"
+>
+  Security Monitor 🛡
+</Link>
+
+
+
+
+<Link
+ to="/admin/system-settings"
+ className="flex items-center gap-3"
+>
+  System Settings⚙️
+</Link>
+
 
 <li>
 
@@ -260,7 +293,7 @@ to="/customer/dashboard"
 className="block hover:text-orange-400"
 >
 
-👤 Customer Dashboard
+ Customer Dashboard 👤
 
 </Link>
 

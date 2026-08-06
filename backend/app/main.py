@@ -30,7 +30,7 @@ from app.routes.customer_route import router as customer_router
 from app.models.user import User
 from app.routes.report_route import router as report_router
 
-
+from app.routes.system_setting_route import router as system_setting_router
 
 from app.routes.branch_route import router as branch_router
 from app.routes.refund_route import router as refund_router
@@ -43,6 +43,10 @@ from app.models.cart_item import CartItem
 from app.models.menu import Menu
 from app.models.restaurant_verification import RestaurantVerification
 from app.models.order import Order
+
+from app.routes.audit_log_route import router as audit_log_router
+from app.routes.business_dashboard_route import router as business_dashboard_router
+from app.routes.security_monitor_route import router as security_monitor_router
 from app.models.order_item import OrderItem
 from app.routes.kitchen_route import router as kitchen_router
 from app.routes.delivery_partner_route import router as delivery_partner_router
@@ -88,6 +92,12 @@ app.include_router(coupon_router)
 app.include_router(
     delivery_dashboard_router
 )
+
+app.include_router(business_dashboard_router)
+
+app.include_router(system_setting_router)
+
+app.include_router(security_monitor_router)
 app.include_router(refund_router)
 
 app.include_router(branch_router)
@@ -122,7 +132,7 @@ app.include_router(
     inventory_router
 )
 
-
+app.include_router(audit_log_router)
 app.include_router(report_router)
 app.include_router(upload_router)
 app.include_router(notification_router)

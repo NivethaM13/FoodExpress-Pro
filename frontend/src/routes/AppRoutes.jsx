@@ -12,7 +12,9 @@ import InventoryManagement from "../pages/restaurant/InventoryManagement";
 import AIRecommendations from "../pages/customer/AIRecommendations";
 import SupportChat from "../pages/customer/SupportChat";
 import Coupons from "../pages/customer/Coupons";
+import BusinessDashboard from "../pages/admin/BusinessDashboard";
 
+import SystemSettings from "../pages/admin/SystemSettings";
 import RestaurantDashboard from "../pages/restaurant/RestaurantDashboard";
 import Review from "../pages/customer/Review";
 import AIChatbot from "../pages/customer/AIChatbot";
@@ -30,7 +32,8 @@ import RestaurantSettings from "../pages/restaurant/RestaurantSettings";
 import Verification from "../pages/restaurant/Verification";
 import VerificationStatus from "../pages/restaurant/VerificationStatus";
 import Menu from "../pages/restaurant/Menu";
-
+import AuditLogs from "../pages/admin/AuditLogs";
+import SecurityMonitor from "../pages/admin/SecurityMonitor";
 import AdminBranches from "../pages/admin/AdminBranches";
 import Notifications from "../pages/customer/Notifications";
 import RestaurantReviews from "../pages/customer/RestaurantReviews";
@@ -74,6 +77,29 @@ function AppRoutes() {
    </ProtectedRoute>
  }
 />
+
+<Route
+ path="/admin/system-settings"
+ element={<SystemSettings />}
+/>
+
+<Route
+  path="/admin/audit-logs"
+  element={<AuditLogs />}
+/>
+
+
+<Route
+  path="/admin/security-monitor"
+  element={<SecurityMonitor />}
+/>
+
+
+<Route
+  path="/admin/business-dashboard"
+  element={<BusinessDashboard />}
+/>
+
 
 <Route
 

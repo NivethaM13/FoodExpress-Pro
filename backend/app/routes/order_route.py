@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.config.database import get_db
 from app.config.security import customer_required
 
+from app.models.audit_log import AuditLog
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.cart import Cart
@@ -17,6 +18,8 @@ router = APIRouter(
     prefix="/orders",
     tags=["Order Management"]
 )
+
+
 
 
 
@@ -83,8 +86,9 @@ def place_order(
 
 
 
-    for item in cart.items:
 
+
+    for item in cart.items:
 
         order_item = OrderItem(
 
@@ -103,14 +107,46 @@ def place_order(
 
 
 
+
+
     # Clear cart
 
     db.query(CartItem).filter(
+
         CartItem.cart_id == cart.id
+
     ).delete()
 
 
+
     db.commit()
+
+
+
+
+
+    # ORDER CREATED AUDIT LOG
+
+    order_log = AuditLog(
+
+        user_id=current_user.id,
+
+        action="ORDER_CREATED",
+
+        module="ORDER",
+
+        description=f"Order #{new_order.id} created successfully",
+
+        ip_address="127.0.0.1"
+
+    )
+
+
+    db.add(order_log)
+
+    db.commit()
+
+
 
 
 
@@ -126,19 +162,32 @@ def place_order(
 
 
 
+
+
+
+
 # View Orders
 @router.get("/")
 def get_orders(
+
     db: Session = Depends(get_db),
+
     current_user: User = Depends(customer_required)
+
 ):
 
     orders = (
+
         db.query(Order)
+
         .filter(
+
             Order.user_id == current_user.id
+
         )
+
         .all()
+
     )
 
 
@@ -148,36 +197,82 @@ def get_orders(
 
 
 
+
+
 # Cancel Order
 @router.put("/{order_id}/cancel")
 def cancel_order(
+
     order_id:int,
+
     db:Session=Depends(get_db),
+
     current_user:User=Depends(customer_required)
+
 ):
 
     order = (
+
         db.query(Order)
+
         .filter(
+
             Order.id == order_id,
+
             Order.user_id == current_user.id
+
         )
+
         .first()
+
     )
+
 
 
     if not order:
 
         raise HTTPException(
+
             status_code=404,
+
             detail="Order not found"
+
         )
+
 
 
     order.order_status="CANCELLED"
 
 
     db.commit()
+
+
+
+
+
+    # ORDER CANCELLED AUDIT LOG
+
+    cancel_log = AuditLog(
+
+        user_id=current_user.id,
+
+        action="ORDER_CANCELLED",
+
+        module="ORDER",
+
+        description=f"Order #{order.id} cancelled by customer",
+
+        ip_address="127.0.0.1"
+
+    )
+
+
+    db.add(cancel_log)
+
+    db.commit()
+
+
+
 
 
     return {
@@ -190,30 +285,50 @@ def cancel_order(
 
 
 
+
+
+
+
 # Reorder Previous Order
 @router.post("/{order_id}/reorder")
 def reorder(
+
     order_id:int,
+
     db:Session=Depends(get_db),
+
     current_user:User=Depends(customer_required)
+
 ):
 
     order = (
+
         db.query(Order)
+
         .filter(
+
             Order.id == order_id,
+
             Order.user_id == current_user.id
+
         )
+
         .first()
+
     )
+
 
 
     if not order:
 
         raise HTTPException(
+
             status_code=404,
+
             detail="Order not found"
+
         )
+
 
 
     return {
