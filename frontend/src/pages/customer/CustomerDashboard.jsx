@@ -1,78 +1,78 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
-
 import api from "../../services/api";
-
 
 
 function CustomerDashboard(){
 
-
-  const [dashboard,setDashboard] = useState(null);
-
+const [dashboard,setDashboard] = useState(null);
 
 
-  useEffect(()=>{
+
+useEffect(()=>{
 
     fetchDashboard();
 
-  },[]);
+},[]);
 
 
 
 
 
-  const fetchDashboard = async()=>{
+const fetchDashboard = async()=>{
+
 
     try{
 
 
-      const response = await api.get(
-
-        "/customer/dashboard/"
-
-      );
+        const response = await api.get(
+            "/customer/dashboard/"
+        );
 
 
-      setDashboard(response.data);
+        console.log(
+            "Customer Dashboard Data:",
+            response.data
+        );
+
+
+        setDashboard(response.data);
 
 
     }
-
     catch(error){
 
-      console.log(error);
+
+        console.log(
+            "Customer Dashboard Error:",
+            error.response?.data || error
+        );
+
 
     }
 
-  };
+
+};
 
 
 
 
 
+if(!dashboard){
 
-  if(!dashboard){
 
-    return(
+return(
 
-      <>
+<div className="p-10 text-xl">
 
-      <Navbar />
+Loading Customer Dashboard...
 
-      <div className="p-10">
+</div>
 
-      Loading Customer Dashboard...
+);
 
-      </div>
 
-      </>
-
-    );
-
-  }
+}
 
 
 
@@ -81,33 +81,15 @@ function CustomerDashboard(){
 
 return(
 
-<>
+
+<div className="p-8 bg-gray-100 min-h-screen">
 
 
-<Navbar />
-
-
-
-<div className="
-flex
-min-h-screen
-bg-gray-100
-">
-
-
-<Sidebar />
-
-
-
-<div className="
-flex-1
-p-8
-">
 
 
 
 <h1 className="
-text-4xl
+text-5xl
 font-bold
 mb-8
 ">
@@ -121,21 +103,21 @@ mb-8
 
 
 
+{/* Wallet */}
 
-{/* Wallet Card */}
 
 
 <div className="
 bg-white
 rounded-2xl
-shadow-xl
-p-6
+shadow
+p-8
 mb-8
 ">
 
 
 <h2 className="
-text-xl
+text-2xl
 font-bold
 ">
 
@@ -145,13 +127,12 @@ font-bold
 
 
 <p className="
-text-4xl
-font-bold
 text-green-600
-mt-3
+text-4xl
+mt-4
 ">
 
-₹ {dashboard.wallet_balance}
+₹ {dashboard.wallet_balance || 0}
 
 </p>
 
@@ -168,6 +149,7 @@ mt-3
 {/* Recent Orders */}
 
 
+
 <h2 className="
 text-3xl
 font-bold
@@ -182,30 +164,25 @@ mb-5
 
 <div className="
 grid
-grid-cols-3
+md:grid-cols-3
 gap-6
-mb-10
 ">
 
 
 
 {
 
-dashboard.recent_orders.map((order)=>(
+dashboard.recent_orders?.map((order)=>(
 
 
 <div
-
 key={order.id}
-
 className="
 bg-white
 rounded-2xl
 shadow
 p-6
 "
-
-
 >
 
 
@@ -219,15 +196,15 @@ Order #{order.id}
 </h3>
 
 
-
-<p className="mt-2">
+<p className="mt-3">
 
 Amount:
 
+<b>
 ₹ {order.total_amount}
+</b>
 
 </p>
-
 
 
 <p>
@@ -235,11 +212,7 @@ Amount:
 Status:
 
 <b>
-
-{" "}
-
 {order.order_status}
-
 </b>
 
 </p>
@@ -264,12 +237,16 @@ Status:
 
 
 
+
+
 {/* Favorite Restaurants */}
+
 
 
 <h2 className="
 text-3xl
 font-bold
+mt-10
 mb-5
 ">
 
@@ -282,30 +259,26 @@ mb-5
 
 <div className="
 grid
-grid-cols-3
+md:grid-cols-3
 gap-6
-mb-10
 ">
+
 
 
 {
 
-dashboard.favorite_restaurants.map(
-
+dashboard.favorite_restaurants?.map(
 (restaurant,index)=>(
 
 
 <div
-
 key={index}
-
 className="
 bg-white
 rounded-2xl
 shadow
 p-6
 "
-
 >
 
 
@@ -319,11 +292,12 @@ font-bold
 </h3>
 
 
-<p className="mt-2">
+<p>
 
 ⭐ Popular Restaurant
 
 </p>
+
 
 
 </div>
@@ -337,14 +311,25 @@ font-bold
 }
 
 
+
 </div>
+
+
+
+
+
+
+
 
 
 {/* Saved Addresses */}
 
+
+
 <h2 className="
 text-3xl
 font-bold
+mt-10
 mb-5
 ">
 
@@ -354,51 +339,39 @@ mb-5
 
 
 
-<div className="
-bg-white
-rounded-2xl
-shadow
-p-6
-mb-10
-">
-
 
 {
 
-dashboard.saved_addresses.length > 0 ?
+dashboard.saved_addresses?.length > 0 ?
 
 
 dashboard.saved_addresses.map(
-
 (address,index)=>(
 
 
-<p
-
+<div
 key={index}
-
 className="
-bg-gray-100
-p-4
+bg-white
+shadow
 rounded-xl
+p-4
+mb-3
 "
-
 >
 
 📍 {address}
 
-</p>
+
+</div>
 
 
-)
-
-
-)
+))
 
 
 :
 
-<p className="text-gray-500">
+<p>
 
 No saved addresses
 
@@ -407,8 +380,6 @@ No saved addresses
 
 }
 
-
-</div>
 
 
 
@@ -420,9 +391,12 @@ No saved addresses
 {/* Notifications */}
 
 
+
+
 <h2 className="
 text-3xl
 font-bold
+mt-10
 mb-5
 ">
 
@@ -432,31 +406,22 @@ mb-5
 
 
 
-<div className="
-grid
-grid-cols-2
-gap-6
-">
-
 
 {
 
-dashboard.notifications.map(
-
+dashboard.notifications?.map(
 (notification)=>(
 
 
 <div
-
 key={notification.id}
-
 className="
 bg-white
-rounded-2xl
 shadow
+rounded-xl
 p-6
+mb-4
 "
-
 >
 
 
@@ -470,8 +435,7 @@ text-xl
 </h3>
 
 
-
-<p className="mt-2">
+<p>
 
 {notification.message}
 
@@ -482,36 +446,25 @@ text-xl
 </div>
 
 
-)
-
-
-)
+))
 
 
 }
 
 
 
-</div>
-
-
 
 
 
 
 </div>
-
-
-</div>
-
-
-</>
 
 
 );
 
 
 }
+
 
 
 export default CustomerDashboard;

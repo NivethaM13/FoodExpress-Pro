@@ -1,115 +1,64 @@
 import { useEffect, useState } from "react";
-
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
-
 import api from "../../services/api";
-
 
 
 function RestaurantDashboard(){
 
-
-  const [dashboard,setDashboard] = useState(null);
-
+const [dashboard,setDashboard] = useState(null);
 
 
-  useEffect(()=>{
+useEffect(()=>{
 
-    fetchDashboard();
+fetchDashboard();
 
-  },[]);
+},[]);
 
 
 
+const fetchDashboard = async()=>{
 
-  const fetchDashboard = async()=>{
+try{
 
+const response = await api.get(
+"/restaurant/dashboard/"
+);
 
-    try{
+setDashboard(response.data);
 
+}
 
-      const response = await api.get(
+catch(error){
 
-        "/restaurant/dashboard/"
+console.log(error);
 
-      );
+}
 
-
-      setDashboard(response.data);
-
-
-    }
-
-    catch(error){
-
-      console.log(error);
-
-    }
-
-
-  };
+};
 
 
 
+if(!dashboard){
 
+return (
 
-  if(!dashboard){
+<div className="p-10 text-xl font-bold">
 
-    return (
+Loading Restaurant Dashboard...
 
-      <>
+</div>
 
-      <Navbar />
+);
 
-      <div className="p-10">
-
-      Loading Dashboard...
-
-      </div>
-
-      </>
-
-    );
-
-  }
-
-
+}
 
 
 
 return(
 
-<>
+<div className="p-8 bg-gray-100 min-h-screen">
 
 
-<Navbar />
-
-
-
-<div className="
-flex
-min-h-screen
-bg-gray-100
-">
-
-
-<Sidebar />
-
-
-
-<div className="
-flex-1
-p-8
-">
-
-
-
-<h1 className="
-text-4xl
-font-bold
-mb-8
-">
+<h1 className="text-4xl font-bold mb-8">
 
 🍔 Restaurant Dashboard
 
@@ -118,141 +67,76 @@ mb-8
 
 
 
-
 {/* Summary Cards */}
 
-
-<div className="
-grid
-grid-cols-3
-gap-6
-mb-8
-">
+<div className="grid grid-cols-3 gap-6 mb-10">
 
 
+<div className="bg-white p-6 rounded-xl shadow">
 
-<div className="
-bg-white
-shadow-xl
-rounded-2xl
-p-6
-">
-
-
-<h2 className="
-text-gray-500
-">
+<h2 className="text-xl font-bold">
 
 Today's Orders
 
 </h2>
 
-
-<p className="
-text-4xl
-font-bold
-text-orange-600
-">
+<p className="text-3xl mt-3">
 
 {dashboard.today_orders}
 
 </p>
 
-
 </div>
 
 
 
 
+<div className="bg-white p-6 rounded-xl shadow">
 
-
-
-<div className="
-bg-white
-shadow-xl
-rounded-2xl
-p-6
-">
-
-
-<h2 className="
-text-gray-500
-">
+<h2 className="text-xl font-bold">
 
 Total Revenue
 
 </h2>
 
-
-<p className="
-text-4xl
-font-bold
-text-green-600
-">
+<p className="text-3xl mt-3">
 
 ₹ {dashboard.total_revenue}
 
 </p>
 
-
 </div>
 
 
 
 
+<div className="bg-white p-6 rounded-xl shadow">
 
-
-<div className="
-bg-white
-shadow-xl
-rounded-2xl
-p-6
-">
-
-
-<h2 className="
-text-gray-500
-">
+<h2 className="text-xl font-bold">
 
 Customer Rating ⭐
 
 </h2>
 
-
-<p className="
-text-4xl
-font-bold
-text-yellow-500
-">
+<p className="text-3xl mt-3">
 
 {dashboard.average_rating}
 
 </p>
 
+</div>
+
 
 </div>
 
 
 
-</div>
 
 
 {/* Popular Food Items */}
 
-<div className="
-bg-white
-shadow-xl
-rounded-2xl
-p-6
-mb-8
-">
 
-
-<h2 className="
-text-2xl
-font-bold
-mb-5
-">
+<h2 className="text-2xl font-bold mb-5">
 
 🔥 Popular Food Items
 
@@ -260,11 +144,7 @@ mb-5
 
 
 
-<div className="
-grid
-grid-cols-3
-gap-5
-">
+<div className="grid grid-cols-3 gap-6">
 
 
 {
@@ -277,30 +157,26 @@ dashboard.popular_foods.map((food,index)=>(
 key={index}
 
 className="
+bg-white
 border
 rounded-xl
 p-5
+shadow
 "
 
 >
 
 
-<h3 className="
-text-xl
-font-bold
-">
+<h3 className="text-xl font-bold">
 
 {food.name}
 
 </h3>
 
 
-<p className="
-text-gray-600
-mt-2
-">
+<p className="mt-3">
 
-Popular Item
+Popular Item 🔥
 
 </p>
 
@@ -314,10 +190,6 @@ Popular Item
 }
 
 
-
-</div>
-
-
 </div>
 
 
@@ -325,34 +197,13 @@ Popular Item
 
 
 
+{/* Reviews */}
 
 
-{/* Reviews Section */}
+<div className="bg-white rounded-xl shadow p-6 mt-10">
 
 
-<div className="
-grid
-grid-cols-2
-gap-6
-">
-
-
-
-
-
-<div className="
-bg-white
-shadow-xl
-rounded-2xl
-p-6
-">
-
-
-<h2 className="
-text-2xl
-font-bold
-mb-4
-">
+<h2 className="text-2xl font-bold">
 
 ⭐ Customer Reviews
 
@@ -360,11 +211,11 @@ mb-4
 
 
 
-<p className="
-text-5xl
-font-bold
-text-yellow-500
-">
+<p className="mt-4">
+
+Average Rating:
+
+{" "}
 
 {dashboard.average_rating}
 
@@ -372,22 +223,19 @@ text-yellow-500
 
 
 
-<p className="mt-3">
+<p>
 
 Total Reviews:
 
-<b>
-
 {" "}
-{dashboard.total_reviews}
 
-</b>
+{dashboard.total_reviews}
 
 </p>
 
 
-</div>
 
+</div>
 
 
 
@@ -397,32 +245,17 @@ Total Reviews:
 
 {/* Sales Analytics */}
 
-<div className="
-bg-white
-shadow-xl
-rounded-2xl
-p-6
-">
+
+<div className="bg-white rounded-xl shadow p-6 mt-10">
 
 
-<h2 className="
-text-2xl
-font-bold
-mb-4
-">
+<h2 className="text-2xl font-bold mb-5">
 
 📈 Sales Analytics
 
 </h2>
 
 
-
-<div className="
-space-y-4
-">
-
-
-<div>
 
 <p>
 
@@ -431,11 +264,7 @@ Orders
 </p>
 
 
-<div className="
-bg-gray-200
-rounded-full
-h-4
-">
+<div className="bg-gray-200 h-4 rounded-full">
 
 
 <div
@@ -448,11 +277,9 @@ rounded-full
 
 style={{
 
-width:
-`${dashboard.today_orders * 10}%`
+width:`${dashboard.today_orders * 10}%`
 
 }}
-
 
 />
 
@@ -460,28 +287,17 @@ width:
 </div>
 
 
-</div>
 
 
 
-
-
-
-<div>
-
-
-<p>
+<p className="mt-5">
 
 Revenue
 
 </p>
 
 
-<div className="
-bg-gray-200
-rounded-full
-h-4
-">
+<div className="bg-gray-200 h-4 rounded-full">
 
 
 <div
@@ -494,11 +310,9 @@ rounded-full
 
 style={{
 
-width:
-`${dashboard.total_revenue / 100}%`
+width:`${dashboard.total_revenue / 100}%`
 
 }}
-
 
 />
 
@@ -506,39 +320,18 @@ width:
 </div>
 
 
-</div>
-
-
-
-</div>
-
-
 
 </div>
 
 
 
 
-
 </div>
-
-
-
-
-
-</div>
-
-
-</div>
-
-
-</>
-
 
 );
 
-
 }
+
 
 
 export default RestaurantDashboard;

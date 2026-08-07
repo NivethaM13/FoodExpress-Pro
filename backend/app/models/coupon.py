@@ -12,7 +12,6 @@ from sqlalchemy.sql import func
 from app.config.database import Base
 
 
-
 class Coupon(Base):
 
     __tablename__ = "coupons"
@@ -38,6 +37,13 @@ class Coupon(Base):
     )
 
 
+    # REFERRAL / BIRTHDAY / CASHBACK / RESTAURANT / LOYALTY
+    coupon_type = Column(
+        String(50),
+        nullable=False
+    )
+
+
     discount_type = Column(
         String(50),
         nullable=False
@@ -59,6 +65,24 @@ class Coupon(Base):
     is_free_delivery = Column(
         Boolean,
         default=False
+    )
+
+
+    restaurant_id = Column(
+        Integer,
+        nullable=True
+    )
+
+
+    usage_limit = Column(
+        Integer,
+        default=0
+    )
+
+
+    used_count = Column(
+        Integer,
+        default=0
     )
 
 

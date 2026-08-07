@@ -1,130 +1,133 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
-
 import api from "../../services/api";
 
 
 function AIRecommendations(){
 
 
-  const [trending,setTrending] = useState([]);
+const [trending,setTrending] = useState([]);
 
-  const [recommended,setRecommended] = useState([]);
+const [recommended,setRecommended] = useState([]);
 
-  const [cuisineFoods,setCuisineFoods] = useState([]);
+const [cuisineFoods,setCuisineFoods] = useState([]);
 
-  const [mealFoods,setMealFoods] = useState([]);
+const [mealFoods,setMealFoods] = useState([]);
 
-  const [search,setSearch] = useState("");
+const [search,setSearch] = useState("");
 
 
 
 
+useEffect(()=>{
 
-  useEffect(()=>{
+fetchTrending();
 
-    fetchTrending();
+fetchRecommended();
 
-    fetchRecommended();
+},[]);
 
-  },[]);
 
 
 
 
+const fetchTrending = async()=>{
 
+try{
 
+const response = await api.get(
+"/recommendations/trending"
+);
 
-  // 🔥 Trending Foods
 
-  const fetchTrending = async()=>{
+setTrending(response.data);
 
-    try{
 
-      const response = await api.get(
-        "/recommendations/trending"
-      );
+}
+catch(error){
 
+console.log(error);
 
-      setTrending(response.data);
+}
 
+};
 
-    }
-    catch(error){
 
-      console.log(error);
 
-    }
 
-  };
 
+const fetchRecommended = async()=>{
 
+try{
 
+const response = await api.get(
+"/recommendations/personalized"
+);
 
 
+setRecommended(response.data);
 
 
+}
+catch(error){
 
-  // 👤 Personalized Recommendation
+console.log(error);
 
-  const fetchRecommended = async()=>{
+}
 
-    try{
+};
 
-      const response = await api.get(
-        "/recommendations/personalized"
-      );
 
 
-      setRecommended(response.data);
 
 
-    }
-    catch(error){
 
-      console.log(error);
+const fetchCuisine = async(cuisine)=>{
 
-    }
+try{
 
-  };
+const response = await api.get(
+`/recommendations/cuisine/${cuisine}`
+);
 
 
+setCuisineFoods(response.data);
 
 
+}
+catch(error){
 
+console.log(error);
 
+}
 
-  // 🌎 Cuisine Suggestion
+};
 
-  const fetchCuisine = async(cuisine)=>{
 
 
-    try{
 
 
-      const response = await api.get(
 
-        `/recommendations/cuisine/${cuisine}`
+const fetchMeal = async(type)=>{
 
-      );
+try{
 
+const response = await api.get(
+`/recommendations/meal/${type}`
+);
 
-      setCuisineFoods(
-        response.data
-      );
 
+setMealFoods(response.data);
 
-    }
-    catch(error){
 
-      console.log(error);
+}
+catch(error){
 
-    }
+console.log(error);
 
+}
 
-  };
+};
 
 
 
@@ -132,560 +135,435 @@ function AIRecommendations(){
 
 
 
+const filteredFoods = recommended.filter(
 
-  // 🍽️ Meal Recommendation
+item =>
 
-  const fetchMeal = async(type)=>{
+item.name
+?.toLowerCase()
+.includes(
+search.toLowerCase()
+)
 
+);
 
-    try{
 
 
-      const response = await api.get(
 
-        `/recommendations/meal/${type}`
 
-      );
 
 
-      setMealFoods(
-        response.data
-      );
+return(
 
 
-    }
-    catch(error){
+<div className="p-8 bg-gray-100 min-h-screen">
 
-      console.log(error);
 
-    }
 
+<h1 className="text-4xl font-bold mb-6">
 
-  };
+🤖 AI Food Recommendations
 
+</h1>
 
 
 
 
+<p className="text-gray-600 mb-8">
 
+Smart suggestions based on your taste 🍔
 
-  // 🔍 Smart Search
+</p>
 
-  const filteredFoods = recommended.filter(
 
-    item =>
 
-    item.name?.toLowerCase()
-    .includes(
-      search.toLowerCase()
-    )
 
-  );
 
+<input
 
 
+value={search}
 
 
+onChange={(e)=>setSearch(e.target.value)}
 
 
-  return(
+placeholder="Search your favorite food 🔍"
 
-    <>
 
+className="
+w-full
+border
+rounded-xl
+px-5
+py-3
+mb-6
+"
 
-    <Navbar />
+/>
 
 
 
-    <div className="
-    flex
-    min-h-screen
-    bg-gray-100
-    ">
 
 
 
-    <Sidebar />
 
 
+<div className="flex gap-4 mb-10">
 
-    <div className="
-    flex-1
-    p-8
-    ">
 
+<button
 
+onClick={()=>fetchCuisine("Indian")}
 
-    <h1 className="
-    text-4xl
-    font-bold
-    mb-6
-    ">
+className="
+bg-orange-500
+text-white
+px-5
+py-2
+rounded-xl
+"
 
-    🤖 AI Food Recommendations
+>
 
-    </h1>
+🍛 Indian
 
+</button>
 
 
-    <p className="
-    text-gray-600
-    mb-8
-    ">
 
-    Smart suggestions based on your taste 🍔
 
-    </p>
+<button
 
+onClick={()=>fetchCuisine("Chinese")}
 
+className="
+bg-orange-500
+text-white
+px-5
+py-2
+rounded-xl
+"
 
+>
 
+🥡 Chinese
 
-    {/* Smart Search */}
+</button>
 
 
-    <input
 
 
-    value={search}
+<button
 
+onClick={()=>fetchMeal("Dinner")}
 
-    onChange={
-      (e)=>setSearch(e.target.value)
-    }
+className="
+bg-orange-500
+text-white
+px-5
+py-2
+rounded-xl
+"
 
+>
 
-    placeholder="
-    Search your favorite food 🔍
-    "
+🍽️ Dinner
 
+</button>
 
-    className="
-    w-full
-    border
-    rounded-xl
-    px-5
-    py-3
-    mb-6
-    "
 
 
-    />
+</div>
 
 
 
 
 
-    {/* Cuisine Buttons */}
 
 
-    <div className="
-    flex
-    gap-4
-    mb-10
-    ">
 
 
-    <button
+<h2 className="text-2xl font-bold mb-4">
 
-    onClick={
-      ()=>fetchCuisine("Indian")
-    }
+🔥 Trending Foods
 
-    className="
-    bg-orange-500
-    text-white
-    px-5
-    py-2
-    rounded-xl
-    "
+</h2>
 
-    >
 
-    🍛 Indian
 
-    </button>
 
+<div className="grid grid-cols-3 gap-6">
 
 
+{
 
-    <button
+trending.map(food=>(
 
-    onClick={
-      ()=>fetchCuisine("Chinese")
-    }
 
-    className="
-    bg-orange-500
-    text-white
-    px-5
-    py-2
-    rounded-xl
-    "
+<div
 
-    >
+key={food.id}
 
-    🥡 Chinese
+className="
+bg-white
+rounded-xl
+shadow
+p-5
+"
 
-    </button>
+>
 
 
+<h3 className="text-xl font-bold">
 
+{food.name}
 
-    <button
+</h3>
 
-    onClick={
-      ()=>fetchMeal("Dinner")
-    }
 
-    className="
-    bg-orange-500
-    text-white
-    px-5
-    py-2
-    rounded-xl
-    "
+<p>
 
-    >
+₹ {food.price}
 
-    🍽️ Dinner
+</p>
 
-    </button>
 
 
-    </div>
+</div>
 
 
+))
 
 
+}
 
-    {/* Trending Foods */}
 
 
-    <h2 className="
-    text-2xl
-    font-bold
-    mb-4
-    ">
+</div>
 
-    🔥 Trending Foods
 
-    </h2>
 
 
 
-    <div className="
-    grid
-    grid-cols-3
-    gap-6
-    ">
 
 
-    {
-      trending.map((food)=>(
 
 
-        <div
+<h2 className="text-2xl font-bold mt-10 mb-4">
 
-        key={food.id}
+👤 Recommended For You
 
-        className="
-        bg-white
-        rounded-xl
-        shadow
-        p-5
-        "
+</h2>
 
-        >
 
 
-        <h3 className="
-        text-xl
-        font-bold
-        ">
 
-        {food.name}
+<div className="grid grid-cols-3 gap-6">
 
-        </h3>
 
+{
 
+filteredFoods.map(food=>(
 
-        <p className="mt-2">
 
-        ₹ {food.price}
+<div
 
-        </p>
+key={food.id}
 
+className="
+bg-white
+rounded-xl
+shadow
+p-5
+"
 
+>
 
-        </div>
 
+<h3 className="text-xl font-bold">
 
-      ))
-    }
+{food.name}
 
+</h3>
 
-    </div>
 
+<p>
 
-        {/* Recommended For You */}
+₹ {food.price}
 
+</p>
 
-    <h2 className="
-    text-2xl
-    font-bold
-    mt-10
-    mb-4
-    ">
 
-    👤 Recommended For You
 
-    </h2>
+<button
 
+className="
+bg-orange-500
+text-white
+px-4
+py-2
+rounded-lg
+mt-4
+"
 
+>
 
+Add To Cart 🛒
 
-    <div className="
-    grid
-    grid-cols-3
-    gap-6
-    ">
+</button>
 
 
-    {
-      filteredFoods.map((food)=>(
 
+</div>
 
-        <div
 
-        key={food.id}
+))
 
-        className="
-        bg-white
-        rounded-xl
-        shadow
-        p-5
-        "
 
-        >
+}
 
 
-        <h3 className="
-        text-xl
-        font-bold
-        ">
 
-        {food.name}
+</div>
 
-        </h3>
 
 
 
-        <p className="mt-2">
 
-        ₹ {food.price}
 
-        </p>
 
 
 
+<h2 className="text-2xl font-bold mt-10 mb-4">
 
-        <button
+🌎 Cuisine Suggestions
 
-        className="
-        bg-orange-500
-        text-white
-        px-4
-        py-2
-        rounded-lg
-        mt-4
-        "
+</h2>
 
-        >
 
-        Add To Cart 🛒
 
-        </button>
 
+<div className="grid grid-cols-3 gap-6">
 
 
-        </div>
+{
 
+cuisineFoods.map(food=>(
 
-      ))
-    }
 
+<div
 
-    </div>
+key={food.id}
 
+className="
+bg-white
+rounded-xl
+shadow
+p-5
+"
 
+>
 
 
+<h3 className="text-xl font-bold">
 
+{food.name}
 
+</h3>
 
 
-    {/* Cuisine Suggestions */}
+<p>
 
+₹ {food.price}
 
+</p>
 
-    <h2 className="
-    text-2xl
-    font-bold
-    mt-10
-    mb-4
-    ">
 
-    🌎 Cuisine Suggestions
+</div>
 
-    </h2>
 
+))
 
 
+}
 
-    <div className="
-    grid
-    grid-cols-3
-    gap-6
-    ">
 
+</div>
 
-    {
-      cuisineFoods.map((food)=>(
 
 
-        <div
 
-        key={food.id}
 
-        className="
-        bg-white
-        rounded-xl
-        shadow
-        p-5
-        "
 
-        >
 
 
-        <h3 className="
-        text-xl
-        font-bold
-        ">
 
-        {food.name}
+<h2 className="text-2xl font-bold mt-10 mb-4">
 
-        </h3>
+🍽️ Meal Recommendations
 
+</h2>
 
 
-        <p>
 
-        ₹ {food.price}
 
-        </p>
+<div className="grid grid-cols-3 gap-6">
 
 
+{
 
-        </div>
+mealFoods.map(food=>(
 
 
-      ))
-    }
+<div
 
+key={food.id}
 
-    </div>
+className="
+bg-white
+rounded-xl
+shadow
+p-5
+"
 
+>
 
 
+<h3 className="text-xl font-bold">
 
+{food.name}
 
+</h3>
 
 
+<p>
 
-    {/* Meal Recommendations */}
+₹ {food.price}
 
+</p>
 
 
-    <h2 className="
-    text-2xl
-    font-bold
-    mt-10
-    mb-4
-    ">
+</div>
 
-    🍽️ Meal Recommendations
 
-    </h2>
+))
 
 
+}
 
 
-    <div className="
-    grid
-    grid-cols-3
-    gap-6
-    ">
 
+</div>
 
-    {
-      mealFoods.map((food)=>(
 
 
-        <div
 
-        key={food.id}
+</div>
 
-        className="
-        bg-white
-        rounded-xl
-        shadow
-        p-5
-        "
 
-        >
+);
 
-
-        <h3 className="
-        text-xl
-        font-bold
-        ">
-
-        {food.name}
-
-        </h3>
-
-
-
-        <p>
-
-        ₹ {food.price}
-
-        </p>
-
-
-
-        </div>
-
-
-      ))
-    }
-
-
-    </div>
-
-
-
-
-    </div>
-
-
-    </div>
-
-
-    </>
-
-  );
 
 }
 

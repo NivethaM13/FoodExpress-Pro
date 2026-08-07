@@ -1,224 +1,211 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
-
 import api from "../../services/api";
-
 
 
 function AIChatbot(){
 
 
-  const [messages,setMessages] = useState([]);
+const [messages,setMessages] = useState([]);
 
-  const [input,setInput] = useState("");
+const [input,setInput] = useState("");
 
 
 
 
+useEffect(()=>{
 
-  useEffect(()=>{
+fetchHistory();
 
-    fetchHistory();
+},[]);
 
-  },[]);
 
 
 
 
 
 
+const fetchHistory = async()=>{
 
-  // Load Chat History
 
-  const fetchHistory = async()=>{
+try{
 
 
-    try{
+const response = await api.get(
+"/chatbot/history"
+);
 
 
-      const response = await api.get(
 
-        "/chatbot/history"
+const history=[];
 
-      );
 
 
+response.data.forEach(item=>{
 
-      const history=[];
 
+history.push({
 
+sender:"user",
 
-      response.data.forEach(item=>{
+text:item.user_message
 
+});
 
-        history.push({
 
-          sender:"user",
 
-          text:item.user_message
+history.push({
 
-        });
+sender:"bot",
 
+text:item.bot_response,
 
+category:item.category
 
-        history.push({
+});
 
-          sender:"bot",
 
-          text:item.bot_response,
+});
 
-          category:item.category
 
-        });
 
+setMessages(history);
 
 
-      });
 
+}
 
+catch(error){
 
-      setMessages(history);
+console.log(error);
 
+}
 
 
-    }
+};
 
-    catch(error){
 
-      console.log(error);
 
-    }
 
 
-  };
 
 
 
 
+const sendMessage = async()=>{
 
 
+if(!input)
 
+return;
 
 
-  // Send Message
 
-  const sendMessage = async()=>{
 
 
-    if(!input)
+const userMessage={
 
-      return;
+sender:"user",
 
+text:input
 
+};
 
 
 
-    const userMessage={
 
 
-      sender:"user",
+setMessages(prev=>[
 
-      text:input
+...prev,
 
+userMessage
 
-    };
+]);
 
 
 
 
 
-    setMessages(prev=>[
 
-      ...prev,
 
-      userMessage
+try{
 
-    ]);
 
+const response = await api.post(
 
+"/chatbot/",
 
+{
 
+message:input
 
+}
 
+);
 
-    try{
 
 
-      const response = await api.post(
 
-        "/chatbot/",
 
-        {
 
-          message:input
+const botMessage={
 
-        }
 
-      );
+sender:"bot",
 
+text:response.data.response,
 
+category:response.data.category
 
 
+};
 
-      const botMessage={
 
 
-        sender:"bot",
 
-        text:response.data.response,
 
-        category:response.data.category
+setMessages(prev=>[
 
+...prev,
 
-      };
+botMessage
 
+]);
 
 
 
+}
 
-      setMessages(prev=>[
+catch(error){
 
-        ...prev,
+console.log(error);
 
-        botMessage
+}
 
-      ]);
 
 
 
-    }
 
+setInput("");
 
-    catch(error){
+};
 
 
-      console.log(error);
 
 
-    }
 
 
 
 
+const quickMessage=(text)=>{
 
-    setInput("");
+setInput(text);
 
-  };
+};
 
 
 
-
-
-
-  const quickMessage=(text)=>{
-
-
-    setInput(text);
-
-
-  };
 
 
 
@@ -227,59 +214,14 @@ function AIChatbot(){
 
 return(
 
-<>
 
-<Navbar />
-
-
-
-<div className="
-flex
-min-h-screen
-bg-gray-100
-">
-
-
-
-<Sidebar />
-
-
-
-<div className="
-flex-1
-p-8
-">
-
-
-
-<div className="
-bg-white
-rounded-2xl
-shadow-xl
-h-[650px]
-flex
-flex-col
-">
+<div className="p-8 min-h-screen bg-gray-100">
 
 
 
 
 
-{/* Header */}
-
-
-<div className="
-bg-orange-500
-text-white
-p-5
-rounded-t-2xl
-">
-
-
-<h1 className="
-text-2xl
-font-bold
-">
+<h1 className="text-4xl font-bold mb-3">
 
 🤖 FoodExpress AI Support
 
@@ -287,23 +229,23 @@ font-bold
 
 
 
-<p>
+
+<p className="text-gray-600 mb-8">
 
 Ask anything about orders, delivery and refunds
 
 </p>
 
 
-</div>
 
-{/* Chat Area */}
 
-<div className="
-flex-1
-p-5
-overflow-y-auto
-space-y-4
-">
+
+
+
+<div className="bg-white rounded-2xl shadow p-6 space-y-4 mb-6">
+
+
+
 
 
 {
@@ -328,6 +270,7 @@ msg.sender==="user"
 "flex justify-start"
 
 }
+
 
 >
 
@@ -360,27 +303,28 @@ msg.sender==="user"
 
 
 
+
+
 {
 
 msg.category &&
 
-<p className="
-text-xs
-mt-2
-">
+<p className="text-sm mt-2">
 
-Category:
-{msg.category}
+Category: {msg.category}
 
 </p>
 
 }
 
 
+
 </div>
 
 
+
 </div>
+
 
 
 ))
@@ -389,6 +333,8 @@ Category:
 }
 
 
+
+
 </div>
 
 
@@ -397,16 +343,9 @@ Category:
 
 
 
-{/* Quick Support Buttons */}
 
 
-<div className="
-px-5
-pb-4
-flex
-gap-3
-flex-wrap
-">
+<div className="flex gap-3 mb-6">
 
 
 
@@ -427,6 +366,8 @@ rounded-xl
 📦 My Order
 
 </button>
+
+
 
 
 
@@ -453,6 +394,7 @@ rounded-xl
 
 
 
+
 <button
 
 onClick={()=>quickMessage("I need refund")}
@@ -470,6 +412,7 @@ rounded-xl
 💰 Refund
 
 </button>
+
 
 
 
@@ -504,15 +447,8 @@ rounded-xl
 
 
 
-{/* Input Area */}
 
-
-<div className="
-p-5
-border-t
-flex
-gap-3
-">
+<div className="flex gap-3">
 
 
 <input
@@ -521,14 +457,10 @@ gap-3
 value={input}
 
 
-onChange={
-(e)=>setInput(e.target.value)
-}
-
+onChange={(e)=>setInput(e.target.value)}
 
 
 placeholder="Ask FoodExpress AI..."
-
 
 
 className="
@@ -539,16 +471,16 @@ px-5
 py-3
 "
 
+
 />
+
 
 
 
 
 <button
 
-
 onClick={sendMessage}
-
 
 className="
 bg-orange-500
@@ -557,10 +489,10 @@ px-6
 rounded-xl
 "
 
-
 >
 
 Send 🚀
+
 
 </button>
 
@@ -574,15 +506,6 @@ Send 🚀
 
 
 </div>
-
-
-</div>
-
-
-</div>
-
-
-</>
 
 
 );

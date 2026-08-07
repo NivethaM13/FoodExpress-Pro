@@ -4,7 +4,9 @@ from sqlalchemy.engine import URL
 from dotenv import load_dotenv
 import os
 
+
 load_dotenv()
+
 
 connection_url = URL.create(
     drivername="mysql+pymysql",
@@ -15,7 +17,12 @@ connection_url = URL.create(
     database=os.getenv("DB_NAME"),
 )
 
-engine = create_engine(connection_url, echo=True)
+
+engine = create_engine(
+    connection_url,
+    echo=True
+)
+
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -23,12 +30,17 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
+
 Base = declarative_base()
 
 
+
 def get_db():
+
     db = SessionLocal()
+
     try:
         yield db
+
     finally:
         db.close()
