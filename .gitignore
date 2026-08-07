@@ -1,21 +1,67 @@
 # Python
-venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
 
-# Environment
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment Variables
 .env
+.env.*
 
-# React
-node_modules/
-dist/
-
-# Database
+# Database files
 *.db
+*.sqlite
+*.sqlite3
 
-# Upload files
-uploads/
+# Logs
+*.log
+
+# Uvicorn
+*.pid
+
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build files
+dist/
+build/
+
+# Vite
+.vite/
+
 
 # IDE
 .vscode/
 .idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+
+# Python cache
+*.pyc
+
+
+# Coverage
+.coverage
+htmlcov/
+
+
+# Uploads
+uploads/
+media/
+
+
+# Temporary files
+*.tmp
+*.temp
