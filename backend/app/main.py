@@ -75,14 +75,19 @@ from app.routes.order_route import router as order_router
 from app.routes.restaurant_verification_route import router as verification_router
 from app.models.restaurant import Restaurant
 from app.models.menu import Menu
-
-
+from app.models.business_intelligence import BusinessAnalytics
+from app.routes import business_intelligence_route
 from app.routes.customer_membership_route import router as customer_membership_router
 
 from app.models.delivery_earnings import DeliveryEarnings
 
 from app.models.customer_membership import CustomerMembership
+from app.routes import marketing_campaign_route
+from app.models.super_admin_control import SuperAdminControl
 
+from app.routes import super_admin_control_route
+
+from app.routes import financial_dashboard_route
 from app.routes.delivery_earnings_route import router as delivery_earnings_router
 
 from app.models.delivery_tracking import DeliveryTracking
@@ -94,10 +99,14 @@ from app.routes.smart_inventory_route import router as smart_inventory_router
 
 
 from app.routes import ai_recommendation_route
+
+from app.routes import complaint_route
 from app.models.restaurant_finance import RestaurantFinance
 
 from app.routes.restaurant_finance_route import router as restaurant_finance_router
+from app.models.platform_monitoring import PlatformMonitoring
 
+from app.routes import platform_monitoring_route
 from app.routes.table_reservation_route import router as table_reservation_router
 from app.models.menu_addon import MenuAddon
 from app.routes.customer_dashboard_route import router as customer_dashboard_router
@@ -118,7 +127,10 @@ Base.metadata.create_all(bind=engine)
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -130,8 +142,18 @@ app.include_router(cart_router)
 app.include_router(addon_router)
 app.include_router(verification_router)
 
+app.include_router(
+    complaint_route.router
+)
 
+app.include_router(
+    marketing_campaign_route.router
+)
 app.include_router(delivery_earnings_router)
+
+app.include_router(
+    super_admin_control_route.router
+)
 
 
 app.include_router(restaurant_performance_router)
@@ -151,6 +173,18 @@ app.include_router(
 app.include_router(restaurant_finance_router)
 app.include_router(route_optimization_router)
 app.include_router(delivery_assignment_router)
+
+app.include_router(
+    platform_monitoring_route.router
+)
+app.include_router(
+    financial_dashboard_route.router
+)
+
+app.include_router(
+    business_intelligence_route.router
+)
+
 
 app.include_router(restaurant_staff_router)
 app.include_router(table_reservation_router)

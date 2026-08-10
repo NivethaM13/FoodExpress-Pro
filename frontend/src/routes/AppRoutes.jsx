@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 
+import CustomerSupportDashboard from "../pages/admin/CustomerSupportDashboard";
 
+
+import MarketingCampaignDashboard from "../pages/admin/MarketingCampaignDashboard";
 // layouts
 import CustomerLayout from "../layouts/CustomerLayout";
 import RestaurantLayout from "../layouts/RestaurantLayout";
@@ -38,6 +41,9 @@ import SupportChat from "../pages/customer/SupportChat";
 import AIRecommendations from "../pages/customer/AIRecommendations";
 import AIChatbot from "../pages/customer/AIChatbot";
 
+import Complaints from "../pages/customer/Complaints";
+
+
 import Coupons from "../pages/customer/Coupons";
 import ScheduledOrders from "../pages/customer/ScheduledOrders";
 
@@ -71,8 +77,11 @@ import AdminBranches from "../pages/admin/AdminBranches";
 import SystemSettings from "../pages/admin/SystemSettings";
 import RouteOptimization from "../pages/admin/RouteOptimization";
 import SmartDeliveryDashboard from "../pages/admin/SmartDeliveryDashboard";
+import MarketingOffers from "../pages/customer/MarketingOffers";
+import FinancialDashboard from "../pages/restaurant/FinancialDashboard";
+import PlatformMonitoringDashboard from "../pages/admin/PlatformMonitoringDashboard";
 
-
+import SuperAdminControlCenter from "../pages/admin/SuperAdminControlCenter";
 
 // DELIVERY
 import DeliveryDashboard from "../pages/delivery/DeliveryDashboard";
@@ -87,12 +96,14 @@ import RestaurantSettings from "../pages/restaurant/RestaurantSettings";
 import Menu from "../pages/restaurant/Menu";
 import InventoryManagement from "../pages/restaurant/InventoryManagement";
 import KitchenDashboard from "../pages/restaurant/KitchenDashboard";
+
+import BusinessIntelligenceDashboard from "../pages/admin/BusinessIntelligenceDashboard";
 import RestaurantPerformanceDashboard from "../pages/restaurant/RestaurantPerformanceDashboard";
 import AIDemandDashboard from "../pages/restaurant/AIDemandDashboard";
 import SmartInventoryDashboard from "../pages/restaurant/SmartInventoryDashboard";
 import StaffManagementDashboard from "../pages/restaurant/StaffManagementDashboard";
 import AIRecommendationDashboard from "../pages/customer/AIRecommendationDashboard";
-import FinancialDashboard from "../pages/restaurant/FinancialDashboard";
+
 
 
 function AppRoutes(){
@@ -147,6 +158,89 @@ element={
 <AIRecommendationDashboard />
 
 </CustomerLayout>
+
+</ProtectedRoute>
+}
+/>
+
+<Route
+path="/admin/marketing-campaigns"
+element={
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<MarketingCampaignDashboard />
+
+</ProtectedRoute>
+}
+/>
+
+
+
+<Route
+path="/admin/super-admin-control"
+element={
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<SuperAdminControlCenter />
+
+</ProtectedRoute>
+}
+/>
+
+<Route
+path="/admin/platform-monitoring"
+element={
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<PlatformMonitoringDashboard />
+
+</ProtectedRoute>
+}
+/>
+
+
+
+
+
+<Route
+path="/customer/marketing-offers"
+element={
+<ProtectedRoute allowedRoles={["CUSTOMER"]}>
+
+<CustomerLayout>
+
+<MarketingOffers />
+
+</CustomerLayout>
+
+</ProtectedRoute>
+}
+/>
+
+
+
+
+<Route
+path="/admin/business-intelligence"
+element={
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<BusinessIntelligenceDashboard />
+
+</ProtectedRoute>
+}
+/>
+
+
+
+
+
+<Route
+path="/admin/financial-dashboard"
+element={
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<FinancialDashboard />
 
 </ProtectedRoute>
 }
@@ -344,6 +438,9 @@ element={
 
 
 
+
+
+
 <Route
 path="/customer/wallet-transactions"
 element={
@@ -358,6 +455,36 @@ element={
 </ProtectedRoute>
 }
 />
+
+<Route
+path="/customer/complaints"
+element={
+<ProtectedRoute allowedRoles={["CUSTOMER"]}>
+
+<CustomerLayout>
+
+<Complaints />
+
+</CustomerLayout>
+
+</ProtectedRoute>
+}
+/>
+
+
+
+
+<Route
+path="/admin/customer-support"
+element={
+<ProtectedRoute allowedRoles={["ADMIN"]}>
+
+<CustomerSupportDashboard />
+
+</ProtectedRoute>
+}
+/>
+
 
 
 

@@ -63,6 +63,65 @@ Reports & Analytics 📊
 
 
 
+<li>
+  <Link
+    to="/admin/platform-monitoring"
+    className="block hover:text-orange-400"
+  >
+     Platform Monitoring 🛡️
+  </Link>
+</li>
+
+
+<li>
+  <Link
+    to="/admin/super-admin-control"
+    className="block hover:text-orange-400"
+  >
+ Super Admin Control Center👑
+  </Link>
+</li>
+
+<Link
+to="/admin/financial-dashboard"
+className="block hover:text-orange-400"
+>
+Financial Dashboard 💰
+</Link>
+
+
+<Link 
+to="/admin/business-intelligence"
+
+className="block hover:text-orange-400">
+  Business Intelligence 📊
+</Link>
+
+
+
+
+
+<Link
+to="/admin/customer-support"
+className="block hover:text-orange-400"
+>
+Customer Support 🎫
+</Link>
+
+
+
+
+
+<Link
+to="/admin/marketing-campaigns"
+className="block hover:text-orange-400"
+>
+Marketing Campaigns 📢
+</Link>
+
+
+
+
 <Link
 to="/admin/refunds"
 className="block hover:text-orange-400"
@@ -260,6 +319,13 @@ Wallet 💰
 
 
 
+<Link
+to="/customer/complaints"
+className="block hover:text-orange-400"
+>
+Customer Support 🎫
+</Link>
+
 
 
 
@@ -271,6 +337,13 @@ Notifications 🔔
 </Link>
 
 
+
+<Link
+to="/customer/marketing-offers"
+className="block hover:text-orange-400"
+>
+Personalized Offers 🎁
+</Link>
 
 <Link
 to="/customer/ai-recommendations"
